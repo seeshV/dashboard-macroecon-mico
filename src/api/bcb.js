@@ -11,11 +11,11 @@ function mapSerieItem(item) {
   };
 }
 
-function buildFallbackSeries(seed, amplitude, length = 60) {
-  return Array.from({ length }).map((_, index) => {
+function buildFallbackSeries(seed, amplitude) {
+  return Array.from({ length: 24 }).map((_, index) => {
     const month = String((index % 12) + 1).padStart(2, '0');
-    const year = 2021 + Math.floor(index / 12);
-    const value = seed + Math.sin(index / 2.2) * amplitude;
+    const year = 2023 + Math.floor(index / 12);
+    const value = seed + Math.sin(index / 2) * amplitude;
 
     return {
       data: `01/${month}/${year}`,
@@ -24,7 +24,7 @@ function buildFallbackSeries(seed, amplitude, length = 60) {
   });
 }
 
-export async function fetchBCBSeries(indicator, limit = 60) {
+export async function fetchBCBSeries(indicator, limit = 24) {
   const serieId = BCB_SERIES[indicator];
 
   if (!serieId) {
@@ -54,9 +54,9 @@ export async function fetchBCBSeries(indicator, limit = 60) {
 
 export async function fetchMacroOverview() {
   const [selic, ipca, dolar] = await Promise.all([
-    fetchBCBSeries('selic', 60),
-    fetchBCBSeries('ipca', 60),
-    fetchBCBSeries('dolar', 60),
+    fetchBCBSeries('selic', 24),
+    fetchBCBSeries('ipca', 24),
+    fetchBCBSeries('dolar', 24),
   ]);
 
   return { selic, ipca, dolar };
